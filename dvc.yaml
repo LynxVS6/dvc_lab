@@ -1,0 +1,33 @@
+stages:
+  clean:
+    cmd: python src/clean.py
+    deps:
+    - src/clean.py
+    outs:
+    - data/clean.csv
+  featurize:
+    cmd: python src/featurize.py
+    deps:
+    - data/clean.csv
+    - src/featurize.py
+    outs:
+    - data/features.csv
+  train:
+    cmd: python src/train.py
+    deps:
+    - data/features.csv
+    - src/train.py
+    outs:
+    - data/X_test.csv
+    - data/y_test.csv
+    - models/model.joblib
+  evaluate:
+    cmd: python src/evaluate.py
+    deps:
+    - data/X_test.csv
+    - data/y_test.csv
+    - models/model.joblib
+    - src/evaluate.py
+    metrics:
+    - metrics/metrics.json:
+        cache: false
